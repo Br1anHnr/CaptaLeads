@@ -6,45 +6,28 @@
 <title>Captador de Leads — Jr. Eng</title>
 <style>
   :root{
-    /* Paleta “IA/Futuro” */
-    --bg-deep:#070b14;       /* quase preto azulado */
-    --bg-mid:#0b1324;        /* fundo intermediário */
-    --blue:#2563eb;
-    --blue-2:#1d4ed8;
-    --cyan:#22d3ee;
-    --violet:#7c3aed;
-    --magenta:#db2777;
-    --text:#e5e7eb;
-    --muted:#9aa4b2;
-
-    --glass-bg: rgba(255,255,255,.08);
-    --glass-line: rgba(255,255,255,.18);
-    --glass-blur: 18px;
-
-    --r-lg:20px; --r-md:12px;
-    --w: 520px; --h: 50px;
+    --bg-deep:#070b14; --bg-mid:#0b1324;
+    --blue:#2563eb; --blue-2:#1d4ed8; --cyan:#22d3ee; --violet:#7c3aed; --magenta:#db2777;
+    --text:#e5e7eb; --muted:#9aa4b2;
+    --glass-bg: rgba(255,255,255,.08); --glass-line: rgba(255,255,255,.18); --glass-blur: 18px;
+    --r-lg:20px; --r-md:12px; --w: 520px; --h: 50px;
   }
-
   *{box-sizing:border-box} html,body{height:100%}
   body{
-    margin:0;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     color:var(--text);
-    background: radial-gradient(1200px 600px at 50% -10%, #0f1b34 0, transparent 60%), linear-gradient(180deg, var(--bg-deep), var(--bg-mid) 60%, #0a1221);
-    overflow:hidden;
-    display:grid; place-items:center;
+    background: radial-gradient(1200px 600px at 50% -10%, #0f1b34 0, transparent 60%),
+               linear-gradient(180deg, var(--bg-deep), var(--bg-mid) 60%, #0a1221);
+    overflow:hidden; display:grid; place-items:center;
   }
-
-  /* ===== Camada Aurora (gradientes animados que se misturam) ===== */
   .aurora, .aurora::before, .aurora::after{
-    position:fixed; inset:-20vmax;
-    content:""; pointer-events:none; z-index:0; filter: blur(60px) saturate(130%);
+    position:fixed; inset:-20vmax; content:""; pointer-events:none; z-index:0;
+    filter: blur(60px) saturate(130%); mix-blend-mode: screen;
     background:
       radial-gradient(40vmax 40vmax at 15% 20%, rgba(34,211,238,.18), transparent 55%),
       radial-gradient(40vmax 40vmax at 80% 30%, rgba(124,58,237,.22), transparent 60%),
       radial-gradient(45vmax 45vmax at 40% 85%, rgba(37,99,235,.20), transparent 55%);
     animation: floatA 18s ease-in-out infinite;
-    mix-blend-mode: screen;
   }
   .aurora::before{
     background:
@@ -58,72 +41,53 @@
       radial-gradient(30vmax 30vmax at 85% 80%, rgba(124,58,237,.20), transparent 60%);
     animation: floatC 22s ease-in-out infinite;
   }
-  @keyframes floatA{ 0%,100%{transform:translate3d(0,0,0)} 50%{transform:translate3d(2vmax,-2vmax,0)} }
-  @keyframes floatB{ 0%,100%{transform:translate3d(0,0,0)} 50%{transform:translate3d(-3vmax,1vmax,0)} }
-  @keyframes floatC{ 0%,100%{transform:translate3d(0,0,0)} 50%{transform:translate3d(2vmax,3vmax,0)} }
+  @keyframes floatA{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(2vmax,-2vmax,0)}}
+  @keyframes floatB{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-3vmax,1vmax,0)}}
+  @keyframes floatC{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(2vmax,3vmax,0)}}
 
-  /* ===== Estrelas (canvas) ===== */
   canvas#stars{position:fixed; inset:0; z-index:0; opacity:.45}
 
-  /* ===== Cartão Glass ===== */
   .card{
-    position:relative; z-index:1;
-    width:min(92vw, var(--w));
-    padding:28px 26px 32px;
-    border-radius:var(--r-lg);
-    background:var(--glass-bg);
-    border:1px solid var(--glass-line);
+    position:relative; z-index:1; width:min(92vw, var(--w));
+    padding:28px 26px 32px; border-radius:var(--r-lg);
+    background:var(--glass-bg); border:1px solid var(--glass-line);
     backdrop-filter: blur(var(--glass-blur));
-    box-shadow:
-      0 30px 80px rgba(0,0,0,.45),
-      0 0 0 1px rgba(255,255,255,.06) inset;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06) inset;
   }
   .card::before{
-    /* brilho na borda */
     content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
     background: linear-gradient(180deg, rgba(34,211,238,.22), rgba(124,58,237,.0) 45%);
     mix-blend-mode: screen;
   }
 
-  /* ===== Header ===== */
-  .brand{
-    display:flex; align-items:center; gap:10px; margin-bottom:6px;
-  }
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:6px}
   .brand-logo{
     width:38px; height:38px; border-radius:12px;
     background: radial-gradient(circle at 30% 30%, #fff, #9ecbff 40%, #4b7ef7 60%),
                 conic-gradient(from 0deg, #22d3ee, #7c3aed, #2563eb, #22d3ee);
     box-shadow: 0 0 24px rgba(59,130,246,.55);
   }
-  h1{
-    margin:0; font-size:22px; font-weight:800; letter-spacing:.2px;
-  }
+  h1{margin:0; font-size:22px; font-weight:800; letter-spacing:.2px}
   .sub{margin:6px 0 22px 48px; color:var(--muted); font-size:13px}
 
-  /* ===== Campos ===== */
   .field{margin-bottom:16px}
   .control{
-    position:relative;
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:12px;
+    position:relative; border:1px solid rgba(255,255,255,.18); border-radius:12px;
     background: rgba(255,255,255,.06);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 26px rgba(2,6,23,.45);
     transition:border-color .15s, box-shadow .15s, transform .15s, background .15s;
   }
-  .control:hover{ transform:translateY(-1px) }
+  .control:hover{transform:translateY(-1px)}
   .control:has(input:focus){
     border-color: rgba(34,211,238,.6);
-    box-shadow: 0 0 0 6px rgba(34,211,238,.15), inset 0 1px 0 rgba(255,255,255,.1), 0 10px 26px rgba(2,6,23,.45);
+    box-shadow: 0 0 0 6px rgba(34,211,238,.15),
+                inset 0 1px 0 rgba(255,255,255,.1), 0 10px 26px rgba(2,6,23,.45);
     background: rgba(255,255,255,.08);
   }
-  input{
-    all:unset; display:block; width:100%; height:var(--h);
-    padding:0 14px; color:#fff; font-size:14px;
-  }
+  input{all:unset; display:block; width:100%; height:var(--h); padding:0 14px; color:#fff; font-size:14px}
   .label{
     position:absolute; left:14px; top:50%; transform:translateY(-50%);
-    background:transparent; color:#cbd5e1; font-size:13px; pointer-events:none;
-    transition:.16s ease;
+    background:transparent; color:#cbd5e1; font-size:13px; pointer-events:none; transition:.16s ease;
   }
   input:focus + .label, input:not(:placeholder-shown) + .label{
     top:-8px; transform:none; font-size:12px; color:#93c5fd;
@@ -131,15 +95,12 @@
     box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset;
   }
 
-  /* ===== Botão ===== */
   .actions{margin-top:6px}
   .btn{
-    position:relative; width:100%; height:54px; border:0; border-radius:14px;
-    color:#fff; font-weight:800; letter-spacing:.2px; cursor:pointer;
+    position:relative; width:100%; height:54px; border:0; border-radius:14px; color:#fff; font-weight:800;
+    letter-spacing:.2px; cursor:pointer;
     background: linear-gradient(180deg, var(--blue), var(--blue-2));
-    box-shadow:
-      0 18px 42px rgba(37,99,235,.35),
-      0 0 0 1px rgba(255,255,255,.06) inset;
+    box-shadow: 0 18px 42px rgba(37,99,235,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
     transition: transform .1s, box-shadow .2s, filter .2s;
   }
   .btn::after{
@@ -147,14 +108,13 @@
     background: linear-gradient(120deg, rgba(255,255,255,.25) 0%, rgba(255,255,255,0) 40%);
     transform: translateX(-120%); transition: transform .7s ease;
   }
-  .btn:hover{ transform:translateY(-1px); box-shadow:0 24px 56px rgba(37,99,235,.45) }
-  .btn:hover::after{ transform: translateX(0) }
-  .btn:active{ transform:translateY(0); filter:saturate(1.06) }
-  .btn:focus{ outline:0; box-shadow:0 0 0 8px rgba(34,211,238,.18), 0 18px 42px rgba(37,99,235,.35) }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 24px 56px rgba(37,99,235,.45)}
+  .btn:hover::after{transform: translateX(0)}
+  .btn:active{transform:translateY(0); filter:saturate(1.06)}
+  .btn:focus{outline:0; box-shadow:0 0 0 8px rgba(34,211,238,.18), 0 18px 42px rgba(37,99,235,.35)}
 
   .note{margin-top:14px; text-align:center; color:var(--muted); font-size:12px}
 
-  /* Motion-reduced */
   @media (prefers-reduced-motion: reduce){
     .aurora, .aurora::before, .aurora::after{animation:none}
     .btn::after{display:none}
@@ -175,7 +135,8 @@
     </div>
     <p class="sub">Preencha os campos para buscar leads qualificados.</p>
 
-    <form method="post" action="https://n8n.projectvalemind.com/form/6df0fc17-5c51-44b7-8870-6e96d0b37882">
+    <!-- Form com submit assíncrono para o Webhook -->
+    <form id="leadForm" novalidate>
       <div class="field">
         <div class="control">
           <input id="nicho" name="nicho" type="text" placeholder=" " required autocomplete="organization-title" />
@@ -191,7 +152,8 @@
       </div>
 
       <div class="actions">
-        <button class="btn" type="submit">Buscar Leads</button>
+        <button class="btn" id="submitBtn" type="submit">Buscar Leads</button>
+        <div id="formStatus" class="note" style="min-height:18px;"></div>
       </div>
     </form>
 
@@ -204,15 +166,13 @@
   const c = document.getElementById('stars');
   const ctx = c.getContext('2d');
   let W, H, stars = [];
-  const COUNT = 120; // aumente/diminua a quantidade
+  const COUNT = 120;
   function resize(){
     W = c.width = window.innerWidth;
     H = c.height = window.innerHeight;
     stars = Array.from({length: COUNT}, () => ({
-      x: Math.random()*W,
-      y: Math.random()*H,
-      r: Math.random()*1.3 + .2,
-      s: Math.random()*.6 + .1
+      x: Math.random()*W, y: Math.random()*H,
+      r: Math.random()*1.3 + .2, s: Math.random()*.6 + .1
     }));
   }
   function step(){
@@ -220,15 +180,59 @@
     ctx.fillStyle = "rgba(255,255,255,0.9)";
     for(const st of stars){
       ctx.globalAlpha = 0.6 + Math.sin((st.y+st.x)*0.002 + performance.now()*0.001)*0.4;
-      ctx.beginPath();
-      ctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, Math.PI*2); ctx.fill();
       st.y -= st.s; if(st.y < -2){ st.y = H + 2; st.x = Math.random()*W; }
     }
     requestAnimationFrame(step);
   }
   window.addEventListener('resize', resize);
   resize(); step();
+})();
+
+/* ===== Envio assíncrono para o Webhook do n8n ===== */
+(function () {
+  const WEBHOOK_URL = "https://n8n.projectvalemind.com/webhook/captaleads";
+  const form = document.getElementById("leadForm");
+  const btn  = document.getElementById("submitBtn");
+  const status = document.getElementById("formStatus");
+
+  function setStatus(msg, ok = true) {
+    status.textContent = msg || "";
+    status.style.color = ok ? "#9aa4b2" : "#ef4444";
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const payload = {
+      nicho: document.getElementById("nicho").value.trim(),
+      localizacao: document.getElementById("localizacao").value.trim(),
+      source: "captaLeadsSite",
+      ts: new Date().toISOString()
+    };
+
+    btn.disabled = true; btn.style.filter = "saturate(0.8)";
+    setStatus("Enviando...");
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Erro HTTP");
+
+      setStatus("Enviado com sucesso! Obrigado.");
+      form.reset();
+      // Opcional: redirecionar para página de obrigado
+      // window.location.href = "/obrigado.html";
+    } catch (err) {
+      setStatus("Erro ao enviar. Tente novamente.", false);
+    } finally {
+      btn.disabled = false; btn.style.filter = "";
+    }
+  });
 })();
 </script>
 </body>
