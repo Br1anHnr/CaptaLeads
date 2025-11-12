@@ -12,14 +12,21 @@
     --glass-bg: rgba(255,255,255,.08); --glass-line: rgba(255,255,255,.18); --glass-blur: 18px;
     --r-lg:20px; --r-md:12px; --w: 520px; --h: 50px;
   }
-  *{box-sizing:border-box} html,body{height:100%}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+
+  /* ===== Centralização total ===== */
   body{
-    margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     color:var(--text);
     background: radial-gradient(1200px 600px at 50% -10%, #0f1b34 0, transparent 60%),
                linear-gradient(180deg, var(--bg-deep), var(--bg-mid) 60%, #0a1221);
-    overflow:hidden; display:grid; place-items:center;
+    display:flex; align-items:center; justify-content:center;
+    min-height:100vh; overflow:hidden;
   }
+
+  /* Aurora */
   .aurora, .aurora::before, .aurora::after{
     position:fixed; inset:-20vmax; content:""; pointer-events:none; z-index:0;
     filter: blur(60px) saturate(130%); mix-blend-mode: screen;
@@ -47,18 +54,21 @@
 
   canvas#stars{position:fixed; inset:0; z-index:0; opacity:.45}
 
+  /* ===== Cartão ===== */
   .card{
     position:relative; z-index:1; width:min(92vw, var(--w));
     padding:28px 26px 32px; border-radius:var(--r-lg);
     background:var(--glass-bg); border:1px solid var(--glass-line);
     backdrop-filter: blur(var(--glass-blur));
     box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.06) inset;
+    transform: translateY(20px); opacity:0; animation: fadeInUp .9s ease forwards;
   }
   .card::before{
     content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
     background: linear-gradient(180deg, rgba(34,211,238,.22), rgba(124,58,237,.0) 45%);
     mix-blend-mode: screen;
   }
+  @keyframes fadeInUp{from{opacity:0; transform:translateY(40px)} to{opacity:1; transform:translateY(0)}}
 
   .brand{display:flex; align-items:center; gap:10px; margin-bottom:6px}
   .brand-logo{
@@ -96,12 +106,15 @@
   }
 
   .actions{margin-top:6px}
+
+  /* ===== Botão com spinner / brilho ===== */
   .btn{
     position:relative; width:100%; height:54px; border:0; border-radius:14px; color:#fff; font-weight:800;
     letter-spacing:.2px; cursor:pointer;
     background: linear-gradient(180deg, var(--blue), var(--blue-2));
     box-shadow: 0 18px 42px rgba(37,99,235,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
-    transition: transform .1s, box-shadow .2s, filter .2s;
+    transition: transform .1s, box-shadow .2s, filter .2s, background .2s;
+    overflow:hidden;
   }
   .btn::after{
     content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
@@ -113,7 +126,57 @@
   .btn:active{transform:translateY(0); filter:saturate(1.06)}
   .btn:focus{outline:0; box-shadow:0 0 0 8px rgba(34,211,238,.18), 0 18px 42px rgba(37,99,235,.35)}
 
+  /* Estado de loading: brilho + spinner */
+  .btn.loading::after{ animation: shine 1.4s linear infinite; }
+  @keyframes shine{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+  .btn.loading .spinner{
+    position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    width:18px; height:18px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.45); border-top-color:#fff;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}
+
   .note{margin-top:14px; text-align:center; color:var(--muted); font-size:12px}
+
+  /* ===== Toast (mensagem flutuante visível) ===== */
+  #toast{
+    position:fixed; top:24px; right:24px; z-index:1000;
+    min-width:260px; max-width:min(92vw,420px);
+    background: rgba(18, 25, 45, .96);
+    color:#e2e8f0; padding:14px 16px; border-radius:12px;
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow: 0 12px 32px rgba(0,0,0,.55);
+    display:flex; align-items:center; gap:10px;
+    opacity:0; transform:translateY(-16px); pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  #toast.show{opacity:1; transform:translateY(0); pointer-events:auto}
+  #toast.success{border-left:4px solid #22c55e}
+  #toast.error{border-left:4px solid #ef4444}
+  #toast .check{
+    width:18px; height:18px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #fff, #9ef7c0 45%, #22c55e 70%);
+    box-shadow:0 0 12px rgba(34,197,94,.55);
+  }
+  #toast .cross{
+    width:18px; height:18px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, #fff, #f7b4b4 45%, #ef4444 70%);
+    box-shadow:0 0 12px rgba(239,68,68,.55);
+  }
+
+  /* ===== Confete (sucesso) ===== */
+  .confetti{
+    position:fixed; inset:0; pointer-events:none; z-index:900;
+  }
+  .confetti span{
+    position:absolute; width:8px; height:10px; border-radius:2px;
+    animation: fall 900ms ease-out forwards;
+  }
+  @keyframes fall{
+    0%{transform:translateY(0) rotate(0deg); opacity:1}
+    100%{transform:translateY(80px) rotate(260deg); opacity:0}
+  }
 
   @media (prefers-reduced-motion: reduce){
     .aurora, .aurora::before, .aurora::after{animation:none}
@@ -126,6 +189,12 @@
   <!-- Aurora + estrelas -->
   <div class="aurora" aria-hidden="true"></div>
   <canvas id="stars" aria-hidden="true"></canvas>
+
+  <!-- Toast -->
+  <div id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- Confete -->
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
 
   <!-- Cartão -->
   <section class="card" role="form" aria-labelledby="t">
@@ -152,7 +221,9 @@
       </div>
 
       <div class="actions">
-        <button class="btn" id="submitBtn" type="submit">Buscar Leads</button>
+        <button class="btn" id="submitBtn" type="submit">
+          <span class="btn-text">Buscar Leads</span>
+        </button>
         <div id="formStatus" class="note" style="min-height:18px;"></div>
       </div>
     </form>
@@ -189,11 +260,44 @@
   resize(); step();
 })();
 
+/* ===== Utilidades UI ===== */
+function showToast(message, type="success"){
+  const toast = document.getElementById('toast');
+  const icon = document.createElement('div');
+  icon.className = type === 'success' ? 'check' : 'cross';
+  toast.className = ''; // reset
+  toast.innerHTML = '';
+  toast.appendChild(icon);
+  const text = document.createElement('div');
+  text.textContent = message;
+  toast.appendChild(text);
+  toast.classList.add('show', type);
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=> toast.classList.remove('show'), 4200);
+}
+
+function burstConfetti(x, y){
+  const wrap = document.getElementById('confetti');
+  const colors = ['#22d3ee','#7c3aed','#2563eb','#fcd34d','#22c55e','#db2777','#e879f9'];
+  for(let i=0;i<26;i++){
+    const s = document.createElement('span');
+    s.style.left = (x + (Math.random()*40-20)) + 'px';
+    s.style.top  = (y + (Math.random()*8-4)) + 'px';
+    s.style.background = colors[Math.random()*colors.length|0];
+    s.style.transform = `translateY(0) rotate(${Math.random()*180|0}deg)`;
+    s.style.opacity = '0.95';
+    s.style.animationDelay = (Math.random()*0.15)+'s';
+    wrap.appendChild(s);
+    setTimeout(()=> s.remove(), 1000);
+  }
+}
+
 /* ===== Envio assíncrono para o Webhook do n8n ===== */
 (function () {
   const WEBHOOK_URL = "https://n8n.projectvalemind.com/webhook/captaleads";
   const form = document.getElementById("leadForm");
   const btn  = document.getElementById("submitBtn");
+  const btnText = btn.querySelector('.btn-text');
   const status = document.getElementById("formStatus");
 
   function setStatus(msg, ok = true) {
@@ -212,8 +316,12 @@
       ts: new Date().toISOString()
     };
 
-    btn.disabled = true; btn.style.filter = "saturate(0.8)";
-    setStatus("Enviando...");
+    // Estado visual: carregando
+    btn.disabled = true;
+    btn.classList.add("loading");
+    btn.insertAdjacentHTML('afterbegin','<span class="spinner" aria-hidden="true"></span>');
+    btnText.textContent = "Buscando leads…";
+    setStatus("Enviando dados para a planilha de leads…");
 
     try {
       const res = await fetch(WEBHOOK_URL, {
@@ -223,14 +331,35 @@
       });
       if (!res.ok) throw new Error("Erro HTTP");
 
-      setStatus("Enviado com sucesso! Obrigado.");
+      // Sucesso
       form.reset();
+      showToast("Leads enviados com sucesso para sua planilha! ✅", "success");
+      setStatus("Enviado com sucesso! Obrigado.");
+
+      // Botão em estado de sucesso
+      btn.style.background = "linear-gradient(90deg,#22c55e,#16a34a)";
+      btnText.textContent = "Enviado!";
+      // Confete próximo ao botão
+      const rect = btn.getBoundingClientRect();
+      burstConfetti(rect.left + rect.width/2, rect.top + window.scrollY + rect.height/2);
+
+      // Voltar ao normal
+      setTimeout(()=>{
+        btnText.textContent = "Buscar Leads";
+        btn.style.background = "";
+      }, 1800);
+
       // Opcional: redirecionar para página de obrigado
       // window.location.href = "/obrigado.html";
     } catch (err) {
+      // Erro
+      showToast("Erro ao enviar. Verifique sua conexão e tente novamente.", "error");
       setStatus("Erro ao enviar. Tente novamente.", false);
+      btnText.textContent = "Tentar novamente";
     } finally {
-      btn.disabled = false; btn.style.filter = "";
+      btn.disabled = false;
+      btn.classList.remove("loading");
+      const sp = btn.querySelector('.spinner'); if (sp) sp.remove();
     }
   });
 })();
