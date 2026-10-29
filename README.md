@@ -1,64 +1,58 @@
 # CaptaLeads
 
-Captação de leads com interface web e automação em n8n, conectando Apify e Google Sheets.
+Criei o CaptaLeads para facilitar a captação e a organização de leads. Montei o fluxo completo no n8n, conectando Apify e Google Sheets, e usei a solução tanto nas minhas atividades quanto na empresa júnior.
 
-Desenvolvi o fluxo de automação completo e utilizei a solução pessoalmente e na empresa júnior. Este repositório contém a interface web e a documentação do caso; o export JSON do n8n ainda não foi recuperado.
+Neste repositório, mantenho a interface web e a documentação da automação. Ainda estou recuperando o export JSON do workflow.
 
-## Problema
+## O que eu queria resolver
 
-Apoiar a prospecção com uma entrada simples de nicho e localização e organizar os leads em uma planilha, reduzindo etapas manuais entre a solicitação e o registro dos dados.
+Queria solicitar buscas por nicho e localização e reunir os leads em uma planilha, sem precisar fazer manualmente cada etapa entre a busca e o registro dos dados.
 
-## Funcionamento
+## Como funciona
 
-O código da interface coleta `nicho` e `localizacao` e envia uma solicitação JSON por POST para um webhook do n8n. A captura fornecida pelo autor mostra uma entrada nativa de formulário, preparação de dados, consulta ao Apify, ajuste de campos e gravação no Google Sheets.
+Na interface web, preencho nicho e localização. A página envia esses campos por POST para um webhook do n8n.
+
+Na captura abaixo, meu fluxo usa o formulário nativo do n8n como entrada. Em seguida, preparo os dados, consulto o Apify, ajusto os campos e gravo os leads no Google Sheets.
 
 ```mermaid
 flowchart LR
-    A[Formulário web: nicho e localização] --> B[Webhook n8n]
-    C[Formulário nativo n8n] --> D[Preparação dos dados]
-    D --> E[Consulta ao Apify]
-    E --> F[Ajuste dos campos]
-    F --> G[Google Sheets]
+    A[Formulário n8n] --> B[Preparação dos dados]
+    B --> C[Consulta ao Apify]
+    C --> D[Ajuste dos campos]
+    D --> E[Google Sheets]
 ```
 
-O diagrama separa a entrada comprovada no código da sequência visível na captura. A ligação do webhook a essa sequência depende da conferência do workflow completo; não é comprovada pelo print recortado.
+![Meu fluxo de captação de leads no n8n](docs/images/n8n-fluxo.png)
 
-![Captura do fluxo n8n fornecida pelo autor](docs/images/n8n-fluxo.png)
+Estou recuperando a versão completa do workflow para documentar também a conexão com o formulário web e disponibilizar um exemplo que possa ser importado.
 
-## Minha contribuição
+## O que fiz
 
-- Construção do fluxo completo de automação no n8n.
-- Uso da solução em atividades pessoais e na empresa júnior.
-- Interface web para solicitar buscas por nicho e localização, com integração via webhook.
+- Montei o fluxo completo da automação no n8n.
+- Integrei a consulta ao Apify e a gravação dos leads no Google Sheets.
+- Conectei a interface web a um webhook para enviar os critérios de busca.
+- Usei a ferramenta na minha rotina e em atividades da empresa júnior.
 
 ## Tecnologias
 
-HTML, CSS e JavaScript na interface; n8n na orquestração; Apify na consulta; Google Sheets como destino dos leads.
+HTML, CSS e JavaScript na interface, n8n na orquestração, Apify na consulta e Google Sheets para organizar os leads.
 
-O fluxo documentado é uma automação de processos. Não há etapa de LLM identificada no código deste repositório ou na captura apresentada.
+## Uso e resultados
 
-## Evidências e resultados
+Usei a solução em atividades reais de prospecção. Ainda não consolidei os números de leads gerados ou o tempo economizado, então não apresento estimativas de resultado.
 
-| Evidência | O que demonstra |
-| --- | --- |
-| [Código da interface](index.html) | Campos de busca e envio assíncrono para webhook. |
-| Captura do n8n acima | Sequência visual de consulta ao Apify e gravação no Sheets. |
-| Experiência do autor | Uso pessoal e na empresa júnior. |
+A captura mostra a estrutura do fluxo. Ainda preciso conferir a configuração atual e registrar uma nova execução completa.
 
-Não há métricas históricas consolidadas de leads, conversão ou horas economizadas. A captura não comprova execução bem-sucedida nem disponibilidade atual. O funcionamento ponta a ponta não foi revalidado nesta revisão documental.
+## Como visualizar
 
-## Consultar a interface
+Abra `index.html` no navegador para conhecer a interface. O botão de busca envia dados para um webhook externo; para testar em outro ambiente, configure seu próprio endpoint.
 
-Abra `index.html` em um navegador para visualizar a página. O botão de envio aponta para um webhook externo configurado no código e pode acionar uma automação real; visualizar a página não exige enviar o formulário.
+Para reproduzir a automação, você também vai precisar de uma instância do n8n, acesso ao Apify e credenciais de uma planilha Google Sheets. Ainda não disponibilizei o export completo do workflow.
 
-Para reutilizar a solução, configure um ambiente próprio de n8n, a consulta ao Apify e as credenciais de uma planilha Google Sheets. Sem o export do workflow, este repositório não oferece uma instalação completa reproduzível.
+## O que quero melhorar
 
-## Próximos passos
-
-- [ ] Recuperar e revisar o export JSON do fluxo, removendo credenciais e dados de terceiros.
-- [ ] Conferir a conexão entre o formulário web e o workflow apresentado.
-- [ ] Gravar uma execução controlada com dados fictícios e mostrar a saída na planilha.
-- [ ] Registrar falhas, duplicidades e duração de execuções em um teste reproduzível.
-- [ ] Medir tempo manual e automatizado antes de publicar estimativas de economia.
-
-A captura foi fornecida pelo autor para documentar seu projeto. URLs administrativas do editor n8n não são usadas como demonstração pública.
+- [ ] Recuperar o export JSON e remover credenciais e dados de terceiros antes de compartilhá-lo.
+- [ ] Conferir a integração entre o formulário web e o workflow.
+- [ ] Gravar uma execução com dados fictícios e mostrar a planilha de saída.
+- [ ] Melhorar o tratamento de falhas e duplicidades.
+- [ ] Medir o tempo da tarefa manual e da automação.
